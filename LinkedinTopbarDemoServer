@@ -1,0 +1,60 @@
+const express = require("express");
+const port = 8888;
+const app = express();
+
+const cors = require("cors");
+
+app.use(cors());
+
+const db = [
+  {
+    network: 3,
+    jobs: 6,
+    messaging: 1,
+    notifications: 0,
+  },
+  {
+    network: 5,
+    jobs: 2,
+    messaging: 3,
+    notifications: 1,
+  },
+  {
+    network: 0,
+    jobs: 0,
+    messaging: 2,
+    notifications: 3,
+  },
+  {
+    network: 6,
+    jobs: 8,
+    messaging: 9,
+    notifications: 4,
+  },
+  {
+    network: 100,
+    jobs: 28,
+    messaging: 59,
+    notifications: 35,
+  },
+];
+
+let magic;
+let newValue;
+app.get("/getTopBarData", (req, res) => {
+  function ValueFinder() {
+    newValue = Math.floor(Math.random() * 5 + 0);
+    if (newValue != magic) {
+      magic = newValue;
+      return;
+    } else {
+      ValueFinder();
+    }
+  }
+  ValueFinder();
+  res.json({
+    data: db[magic],
+  });
+});
+
+app.listen(port);
